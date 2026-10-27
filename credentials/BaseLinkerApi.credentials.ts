@@ -27,7 +27,9 @@ export class BaseLinkerApi implements ICredentialType {
 			name: 'apiUrl',
 			type: 'string',
 			default: 'https://api.baselinker.com/connector.php',
-			description: 'BaseLinker API endpoint URL. Default is https://api.baselinker.com/connector.php.',
+			placeholder: 'https://api.baselinker.com/connector.php',
+			required: true,
+			description: 'BaseLinker API endpoint URL. Default is https://api.baselinker.com/connector.php. Can be customized for corporate proxies, staging gateways, or test mocks.',
 		},
 	];
 
@@ -42,7 +44,7 @@ export class BaseLinkerApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: '={{$credentials.apiUrl}}',
+			baseURL: '={{$credentials.apiUrl || "https://api.baselinker.com/connector.php"}}',
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',

@@ -85,7 +85,7 @@ export async function baselinkerApiRequest(
 	}
 
 	const token = credentials.token as string;
-	const apiUrl = (credentials.apiUrl as string) || 'https://api.baselinker.com/connector.php';
+	const apiUrl = ((credentials.apiUrl as string) || 'https://api.baselinker.com/connector.php').trim();
 
 	const bodyParams = new URLSearchParams();
 	bodyParams.append('method', method);
