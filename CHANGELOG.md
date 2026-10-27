@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Output Schema Return Without Live Data (`returnSampleData`)**:
+  - Added a top-level parameter `Return Sample Data (Mock / Schema Only)` to the `BaseLinker` node.
+  - Allows workflow designers to click "Test step" and immediately receive complete, realistic BaseLinker output schemas in downstream nodes without making any external API calls or consuming rate limits.
+- **n8n AI Tool Support (`usableAsTool: true`)**:
+  - Configured `usableAsTool: true` on `BaseLinker` node, allowing it to be used directly as an on-demand tool by n8n AI Agents (LangChain agents).
+- **Realistic Sample Data Generators**:
+  - Added [`nodes/BaseLinker/Samples/SampleData.ts`](nodes/BaseLinker/Samples/SampleData.ts) providing typed schema fixtures across all 8 BaseLinker resources (`orders`, `orderStatus`, `courierShipments`, `invoices`, `productCatalog`, `crm`, `orderReturns`, `externalStorages`, `baseConnect`).
+- **Automated Tests**:
+  - Added [`test/SampleData.test.ts`](test/SampleData.test.ts) (10 tests) and [`test/AiToolAndMock.test.ts`](test/AiToolAndMock.test.ts) (4 tests), bringing test suite to 312 tests passing.
+
+---
+
 ## [0.1.1] - 2026-10-27
 
 ### Security

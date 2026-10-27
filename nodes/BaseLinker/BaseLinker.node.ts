@@ -98,6 +98,7 @@ import {
 	baselinkerGetExternalStorageProductsPricesAll,
 	normalizeTimestamp,
 } from './GenericFunctions';
+import { getSampleData } from './Samples/SampleData';
 
 export class BaseLinker implements INodeType {
 	description: INodeTypeDescription = {
@@ -108,6 +109,7 @@ export class BaseLinker implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Consume BaseLinker API for ecommerce management, orders, products, and shipments',
+		usableAsTool: true,
 		defaults: {
 			name: 'BaseLinker',
 		},
@@ -173,6 +175,14 @@ export class BaseLinker implements INodeType {
 					},
 				],
 				default: 'orders',
+			},
+			{
+				displayName: 'Return Sample Data (Mock / Schema Only)',
+				name: 'returnSampleData',
+				type: 'boolean',
+				default: false,
+				description:
+					'Whether to return static mock data without contacting BaseLinker API. Useful for inspecting output schema, testing AI tools, and building downstream mappings without live data or API tokens.',
 			},
 			...orderOperations,
 			...orderFields,
@@ -521,6 +531,25 @@ export class BaseLinker implements INodeType {
 			try {
 				const resource = this.getNodeParameter('resource', i) as string;
 				const operation = this.getNodeParameter('operation', i) as string;
+				const returnSampleData = this.getNodeParameter('returnSampleData', i, false) as boolean;
+
+				if (returnSampleData) {
+					const sample = getSampleData(resource, operation);
+					if (Array.isArray(sample)) {
+						for (const item of sample) {
+							returnData.push({
+								json: item,
+								pairedItem: { item: i },
+							});
+						}
+					} else {
+						returnData.push({
+							json: sample,
+							pairedItem: { item: i },
+						});
+					}
+					continue;
+				}
 
 				if (resource === 'orders' && operation === 'getOrders') {
 					const inputMode = this.getNodeParameter('parameterInputMode', i, 'fields') as string;
