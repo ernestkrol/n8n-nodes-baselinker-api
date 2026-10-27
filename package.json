@@ -43,20 +43,21 @@
   },
   "devDependencies": {
     "@types/node": "^24.19.2",
-    "n8n-workflow": "^2.16.0",
+    "n8n-workflow": "~2.44.2",
     "rimraf": "^6.1.3",
     "tsx": "^4.23.15",
-    "typescript": "^5.4.0"
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
   },
   "allowScripts": {
+    "cpu-features@0.0.10": true,
     "esbuild@0.28.2": true,
     "isolated-vm@7.0.1": true,
     "ssh2@1.15.0": true
   },
   "overrides": {
-    "zod": "^4.6.6"
+    "zod": "^4.6.7"
   }
 }

@@ -1,11 +1,17 @@
+// Test environment setup for BaseLinker n8n community node
+// Ensures backward compatibility for n8n-workflow schema validators across Zod versions
 import { _ZodString } from 'zod';
 
-// Polyfill z.string().ip() for n8n-workflow compatibility under Zod 4
-if (_ZodString && !(_ZodString.prototype as any).ip) {
-	(_ZodString.prototype as any).ip = function (this: any, options?: { version?: 'v4' | 'v6' }) {
-		if (options?.version === 'v6') {
-			return this.ipv6();
+const ZodStringClass = _ZodString as any;
+
+if (ZodStringClass?.prototype && !ZodStringClass.prototype.ip) {
+	ZodStringClass.prototype.ip = function (this: any, options?: { version?: 'v4' | 'v6' }) {
+		if (typeof this.ipv4 === 'function' && typeof this.ipv6 === 'function') {
+			return options?.version === 'v6' ? this.ipv6() : this.ipv4();
 		}
-		return this.ipv4();
+		return this;
 	};
 }
+
+
+
